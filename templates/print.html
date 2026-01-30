@@ -177,21 +177,24 @@
 </button>
 
 <div class="sheet">
-    <div class="header">
-        <div class="header-info">
-            <h1>AM LICITA</h1>
-            <p><strong>CNPJ: 59.992.876/0001-04</strong></p>
-            <p>RUA PADRE JOSÉ HERMANO TORRES PORTUGAL, 272 (CASA 01)</p>
-            <p>Ponta Grossa/PR - CEP: 84033-822</p>
-            <p>FONE: (42) 3236-8999 | andersonluizdemiranda@gmail.com</p>
+        <div class="header">
+            <div class="header-info" style="display: flex; align-items: center; gap: 20px;">
+                <img src="https://i.ibb.co/pv6gdTZw/logo.png" alt="Logo AM LICITA" style="width: 80px; height: auto;">
+                
+                <div>
+                    <h1 style="margin: 0; font-size: 26px; color: #005596;">AM LICITA</h1>
+                    <p style="margin: 1px 0; font-size: 10px;"><strong>CNPJ: 59.992.876/0001-04</strong></p>
+                    <p style="margin: 1px 0; font-size: 10px;">RUA PADRE JOSÉ HERMANO TORRES PORTUGAL, 272 (CASA 01)</p>
+                    <p style="margin: 1px 0; font-size: 10px;">Ponta Grossa/PR - CEP: 84033-822</p>
+                    <p style="margin: 1px 0; font-size: 10px;">FONE: (42) 3236-8999 | andersonluizdemiranda@gmail.com</p>
+                </div>
+            </div>
+            <div class="os-badge">
+                <h2>ORDEM DE SERVIÇO</h2>
+                <div class="number">Nº {{ ordem.numero }}</div>
+                <div class="date" style="font-size: 11px;">Data: {{ ordem.data_criacao.strftime('%d/%m/%Y') }}</div>
+            </div>
         </div>
-        <div class="os-badge">
-            <h2>ORDEM DE SERVIÇO</h2>
-            <div class="number">Nº {{ ordem.numero }}</div>
-            <div class="date" style="font-size: 11px;">Data: {{ ordem.data_criacao.strftime('%d/%m/%Y') }}</div>
-        </div>
-    </div>
-
     <div class="info-table">
         <div class="info-row">
             <span class="label">CLIENTE:</span>
@@ -265,3 +268,4 @@
 
 </body>
 </html>
+
