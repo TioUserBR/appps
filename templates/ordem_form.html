@@ -79,22 +79,11 @@
                         <tr>
                             <th class="th-desc">Descrição</th>
                             <th class="th-qty">Qtd</th>
-                            <th class="th-price">Valor Unit.</th>
-                            <th class="th-total">Total</th>
-                            <th class="th-actions">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="itemsBody">
                         <!-- Itens serão adicionados aqui via JS -->
                     </tbody>
-                    <tfoot>
-                        <tr class="total-row">
-                            <td colspan="3" class="total-label">VALOR TOTAL:</td>
-                            <td class="total-value" id="totalGeral">R$ 0,00</td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
             </div>
             
             <input type="hidden" name="itens_json" id="itensJson">
@@ -271,4 +260,5 @@
         renderizarItens();
     }
 </script>
+
 {% endblock %}
