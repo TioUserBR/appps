@@ -5,7 +5,7 @@ import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'am-licita-secret-key-2024'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'psql "postgresql://neondb_owner:npg_NdD0h6CyXqTK@ep-old-truth-ah84vn8i-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://neondb_owner:npg_NdD0h6CyXqTK@ep-old-truth-ah84vn8i-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -256,4 +256,5 @@ with app.app_context():
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
 
