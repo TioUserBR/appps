@@ -1,493 +1,267 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OS {{ ordem.numero }} - AM LICITA</title>
     <style>
-        * {
+        @page { 
+            size: A4 portrait; 
+            margin: 10mm; /* Margem reduzida para garantir folha única */
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact; 
+        }
+
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        
-        @page {
-            size: A4;
-            margin: 10mm;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            font-size: 11pt;
-            line-height: 1.4;
-            color: #333;
             background: #fff;
+            color: #000;
+            line-height: 1.2;
         }
-        
-        .print-container {
+
+        .sheet {
+            width: 100%;
             max-width: 210mm;
             margin: 0 auto;
-            padding: 15mm;
-            background: #fff;
+            position: relative;
+            background: white;
         }
-        
-        /* Header */
+
+        /* Estilo do Cabeçalho identico ao solicitado */
         .header {
+            border-bottom: 2px solid #005596;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #1a237e;
-            margin-bottom: 20px;
+            align-items: flex-end;
         }
-        
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #1a237e 0%, #7c4dff 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 28px;
+
+        .header-info h1 {
+            margin: 0;
+            font-size: 26px;
+            color: #005596;
             font-weight: bold;
         }
-        
-        .company-info h1 {
-            font-size: 24pt;
-            color: #1a237e;
-            font-weight: 800;
-            margin-bottom: 3px;
+
+        .header-info p {
+            margin: 1px 0;
+            font-size: 10px;
+            color: #333;
         }
-        
-        .company-info p {
-            font-size: 9pt;
-            color: #666;
-        }
-        
-        .os-number {
+
+        .os-badge {
             text-align: right;
         }
-        
-        .os-number h2 {
-            font-size: 14pt;
+
+        .os-badge h2 {
+            margin: 0;
+            font-size: 14px;
             color: #666;
-            font-weight: normal;
         }
-        
-        .os-number .number {
-            font-size: 28pt;
-            color: #1a237e;
-            font-weight: 800;
+
+        .os-badge .number {
+            font-size: 24px;
+            color: #005596;
+            font-weight: bold;
         }
-        
-        .os-number .date {
-            font-size: 10pt;
-            color: #666;
-            margin-top: 5px;
+
+        /* Tabela de Informações do Cliente */
+        .info-table {
+            width: 100%;
+            margin-bottom: 15px;
         }
-        
-        /* Sections */
-        .section {
-            margin-bottom: 20px;
-        }
-        
-        .section-title {
-            background: linear-gradient(135deg, #1a237e 0%, #7c4dff 100%);
-            color: white;
-            padding: 8px 15px;
-            font-size: 11pt;
-            font-weight: 600;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-        
-        .section-content {
-            padding: 0 5px;
-        }
-        
-        /* Client Info */
-        .client-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        
-        .client-grid .full-width {
-            grid-column: 1 / -1;
-        }
-        
+
         .info-row {
             display: flex;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 5px 0;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 6px;
+            padding-bottom: 2px;
         }
-        
-        .info-row label {
-            font-weight: 600;
-            color: #1a237e;
-            min-width: 100px;
-            font-size: 9pt;
+
+        .label {
+            font-weight: bold;
+            font-size: 11px;
+            color: #005596;
+            margin-right: 8px;
+            white-space: nowrap;
         }
-        
-        .info-row span {
+
+        .fill {
             flex: 1;
-            font-size: 10pt;
+            font-size: 11px;
+            color: #000;
         }
-        
-        /* Items Table */
-        .items-table {
+
+        /* Tabela de Itens Sem Valores */
+        table.items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
-        
-        .items-table th {
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 10px;
+
+        table.items-table th {
+            background: #f0f0f0 !important;
+            border: 1px solid #000;
+            padding: 6px;
+            font-size: 11px;
             text-align: left;
-            font-weight: 600;
-            font-size: 9pt;
-            color: #1a237e;
         }
-        
-        .items-table td {
-            border: 1px solid #ddd;
-            padding: 8px 10px;
-            font-size: 10pt;
+
+        table.items-table td {
+            border: 1px solid #000;
+            padding: 6px;
+            font-size: 11px;
+            vertical-align: top;
         }
-        
-        .items-table .item-number {
-            width: 40px;
-            text-align: center;
-        }
-        
-        .items-table .item-qty {
-            width: 60px;
-            text-align: center;
-        }
-        
-        .items-table .item-price,
-        .items-table .item-total {
-            width: 100px;
-            text-align: right;
-        }
-        
-        .items-table tbody tr:nth-child(even) {
-            background: #fafafa;
-        }
-        
-        .items-table tfoot td {
-            font-weight: 700;
-            font-size: 12pt;
-            background: #f5f5f5;
-        }
-        
-        .items-table .total-label {
-            text-align: right;
-            padding-right: 15px;
-            color: #1a237e;
-        }
-        
-        .items-table .total-value {
-            text-align: right;
-            color: #1a237e;
-            font-size: 14pt;
-        }
-        
-        /* Observations */
-        .observations {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 15px;
+
+        .col-qtd { width: 60px; text-align: center; }
+        .col-item { width: 40px; text-align: center; }
+
+        /* Observações e Assinaturas */
+        .obs-section {
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            padding: 8px;
             min-height: 60px;
-            font-size: 10pt;
+            font-size: 10px;
+            background: #f9f9f9;
         }
-        
-        /* Footer */
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e0e0e0;
-        }
-        
-        .signature-section {
+
+        .signature-area {
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
-            gap: 40px;
+            gap: 50px;
         }
-        
-        .signature-box {
+
+        .sig-box {
             flex: 1;
             text-align: center;
-        }
-        
-        .signature-line {
-            border-top: 1px solid #333;
-            margin-bottom: 5px;
+            border-top: 1px solid #000;
             padding-top: 5px;
+            font-size: 10px;
         }
-        
-        .signature-label {
-            font-size: 9pt;
-            color: #666;
-        }
-        
-        .footer-info {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px dashed #ccc;
-        }
-        
-        .footer-info p {
-            font-size: 8pt;
-            color: #888;
-            margin: 3px 0;
-        }
-        
-        /* Print controls */
-        .print-controls {
+
+        .print-button {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-        }
-        
-        .print-controls button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-print {
-            background: linear-gradient(135deg, #1a237e 0%, #7c4dff 100%);
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: #005596;
             color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            font-weight: bold;
         }
-        
-        .btn-back {
-            background: #f5f5f5;
-            color: #333;
-        }
-        
-        .btn-print:hover, .btn-back:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        
+
         @media print {
-            .print-controls {
-                display: none !important;
-            }
-            
-            body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            
-            .print-container {
-                padding: 0;
-            }
-        }
-        
-        /* Status Badge */
-        .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 10pt;
-            font-weight: 600;
-            margin-left: 15px;
-        }
-        
-        .status-pendente {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-concluida {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status-cancelada {
-            background: #f8d7da;
-            color: #721c24;
+            .print-button { display: none !important; }
+            body { margin: 0; }
+            .sheet { padding: 0; }
+            .obs-section { min-height: 80px; } /* Garante espaço para anotações */
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="print-controls">
-        <button class="btn-back" onclick="window.close()">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </button>
-        <button class="btn-print" onclick="window.print()">
-            <i class="fas fa-print"></i> Imprimir / Salvar PDF
-        </button>
+
+<button class="print-button" onclick="window.print()">
+    🖨️ IMPRIMIR / SALVAR PDF
+</button>
+
+<div class="sheet">
+    <div class="header">
+        <div class="header-info">
+            <h1>AM LICITA</h1>
+            <p><strong>CNPJ: 59.992.876/0001-04</strong></p>
+            <p>RUA PADRE JOSÉ HERMANO TORRES PORTUGAL, 272 (CASA 01)</p>
+            <p>Ponta Grossa/PR - CEP: 84033-822</p>
+            <p>FONE: (42) 3236-8999 | andersonluizdemiranda@gmail.com</p>
+        </div>
+        <div class="os-badge">
+            <h2>ORDEM DE SERVIÇO</h2>
+            <div class="number">Nº {{ ordem.numero }}</div>
+            <div class="date" style="font-size: 11px;">Data: {{ ordem.data_criacao.strftime('%d/%m/%Y') }}</div>
+        </div>
     </div>
 
-    <div class="print-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo-section">
-                <div class="logo-icon">AM</div>
-                <div class="company-info">
-                    <h1>AM LICITA</h1>
-                    <p>Soluções em Licitações e Contratos</p>
-                </div>
+    <div class="info-table">
+        <div class="info-row">
+            <span class="label">CLIENTE:</span>
+            <span class="fill"><strong>{{ ordem.cliente }}</strong></span>
+        </div>
+        <div class="info-row">
+            <span class="label">ENDEREÇO:</span>
+            <span class="fill">{{ ordem.endereco or 'Não informado' }}</span>
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <div class="info-row" style="flex: 2;">
+                <span class="label">CIDADE:</span>
+                <span class="fill">{{ ordem.cidade or 'Não informada' }}</span>
             </div>
-            <div class="os-number">
-                <h2>ORDEM DE SERVIÇO</h2>
-                <div class="number">Nº {{ ordem.numero }}</div>
-                <div class="date">{{ ordem.data_criacao.strftime('%d/%m/%Y') }}</div>
+            <div class="info-row" style="flex: 1;">
+                <span class="label">FONE:</span>
+                <span class="fill">{{ ordem.telefone or 'Não informado' }}</span>
             </div>
         </div>
-
-        <!-- Status -->
-        <div style="text-align: right; margin-bottom: 15px;">
-            <span class="status-badge status-{{ ordem.status }}">
-                {% if ordem.status == 'pendente' %}
-                    ⏳ PENDENTE
-                {% elif ordem.status == 'concluida' %}
-                    ✅ CONCLUÍDA
-                {% else %}
-                    ❌ CANCELADA
-                {% endif %}
-            </span>
+        <div class="info-row">
+            <span class="label">CPF/CNPJ:</span>
+            <span class="fill">{{ ordem.cpf_cnpj or 'Não informado' }}</span>
         </div>
+    </div>
 
-        <!-- Client Data -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-user"></i> DADOS DO CLIENTE
-            </div>
-            <div class="section-content">
-                <div class="client-grid">
-                    <div class="info-row full-width">
-                        <label>Cliente:</label>
-                        <span><strong>{{ ordem.cliente }}</strong></span>
-                    </div>
-                    {% if ordem.cpf_cnpj %}
-                    <div class="info-row">
-                        <label>CPF/CNPJ:</label>
-                        <span>{{ ordem.cpf_cnpj }}</span>
-                    </div>
-                    {% endif %}
-                    {% if ordem.telefone %}
-                    <div class="info-row">
-                        <label>Telefone:</label>
-                        <span>{{ ordem.telefone }}</span>
-                    </div>
-                    {% endif %}
-                    {% if ordem.email %}
-                    <div class="info-row">
-                        <label>E-mail:</label>
-                        <span>{{ ordem.email }}</span>
-                    </div>
-                    {% endif %}
-                    {% if ordem.cidade %}
-                    <div class="info-row">
-                        <label>Cidade:</label>
-                        <span>{{ ordem.cidade }}</span>
-                    </div>
-                    {% endif %}
-                    {% if ordem.endereco %}
-                    <div class="info-row full-width">
-                        <label>Endereço:</label>
-                        <span>{{ ordem.endereco }}</span>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Items -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-list"></i> ITENS / SERVIÇOS
-            </div>
-            <div class="section-content">
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th class="item-number">#</th>
-                            <th>DESCRIÇÃO</th>
-                            <th class="item-qty">QTD</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in ordem.itens %}
-                        <tr>
-                            <td class="item-number">{{ loop.index }}</td>
-                            <td>{{ item.descricao }}</td>
-                            <td class="item-qty">{{ item.quantidade }}</td>
-                        </tr>
-                        {% endfor %}
-                        {% for i in range(ordem.itens|length, 8) %}
-                        <tr>
-                            <td class="item-number">&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td class="item-qty">&nbsp;</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        <!-- Observations -->
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-sticky-note"></i> OBSERVAÇÕES
-            </div>
-            <div class="section-content">
-                <div class="observations">
-                    {{ ordem.observacoes or 'Nenhuma observação registrada.' }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="signature-section">
-                <div class="signature-box">
-                    <div class="signature-line"></div>
-                    <div class="signature-label">Responsável - AM LICITA</div>
-                </div>
-                <div class="signature-box">
-                    <div class="signature-line"></div>
-                    <div class="signature-label">Cliente: {{ ordem.cliente }}</div>
-                </div>
-            </div>
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th class="col-item">#</th>
+                <th class="col-qtd">QTD</th>
+                <th>DESCRIÇÃO DOS SERVIÇOS / PRODUTOS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ordem.itens %}
+            <tr>
+                <td class="col-item">{{ loop.index }}</td>
+                <td class="col-qtd">{{ item.quantidade }}</td>
+                <td>{{ item.descricao }}</td>
+            </tr>
+            {% endfor %}
             
-            <div class="footer-info">
-                <p><strong>AM LICITA</strong> - Soluções em Licitações e Contratos</p>
-                <p>Documento gerado em {{ ordem.data_criacao.strftime('%d/%m/%Y às %H:%M') }}</p>
-                <p>Este documento é válido como comprovante de ordem de serviço</p>
-            </div>
+            {% for i in range(ordem.itens|length, 12) %}
+            <tr>
+                <td class="col-item">&nbsp;</td>
+                <td class="col-qtd">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="label" style="margin-bottom: 5px;">OBSERVAÇÕES:</div>
+    <div class="obs-section">
+        {{ ordem.observacoes or 'Nenhuma observação registrada.' }}
+    </div>
+
+    <div class="signature-area">
+        <div class="sig-box">
+            <strong>AM LICITA</strong><br>Responsável
+        </div>
+        <div class="sig-box">
+            <strong>{{ ordem.cliente }}</strong><br>Assinatura do Cliente
         </div>
     </div>
-</body>
 
+    <div style="margin-top: 20px; text-align: center; font-size: 8px; color: #888;">
+        Documento gerado em {{ ordem.data_criacao.strftime('%d/%m/%Y às %H:%M') }}
+    </div>
+</div>
+
+</body>
 </html>
