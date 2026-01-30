@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS {{ ordem.numero }} - AM LICITA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+            background: #fff;
+        }
+        
+        .print-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 15mm;
+            background: #fff;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1a237e;
+            margin-bottom: 20px;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1a237e 0%, #7c4dff 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .company-info h1 {
+            font-size: 24pt;
+            color: #1a237e;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+        
+        .company-info p {
+            font-size: 9pt;
+            color: #666;
+        }
+        
+        .os-number {
+            text-align: right;
+        }
+        
+        .os-number h2 {
+            font-size: 14pt;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .os-number .number {
+            font-size: 28pt;
+            color: #1a237e;
+            font-weight: 800;
+        }
+        
+        .os-number .date {
+            font-size: 10pt;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #1a237e 0%, #7c4dff 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 11pt;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        
+        .section-content {
+            padding: 0 5px;
+        }
+        
+        /* Client Info */
+        .client-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .client-grid .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .info-row {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 5px 0;
+        }
+        
+        .info-row label {
+            font-weight: 600;
+            color: #1a237e;
+            min-width: 100px;
+            font-size: 9pt;
+        }
+        
+        .info-row span {
+            flex: 1;
+            font-size: 10pt;
+        }
+        
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .items-table th {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 9pt;
+            color: #1a237e;
+        }
+        
+        .items-table td {
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+            font-size: 10pt;
+        }
+        
+        .items-table .item-number {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .items-table .item-qty {
+            width: 60px;
+            text-align: center;
+        }
+        
+        .items-table .item-price,
+        .items-table .item-total {
+            width: 100px;
+            text-align: right;
+        }
+        
+        .items-table tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+        
+        .items-table tfoot td {
+            font-weight: 700;
+            font-size: 12pt;
+            background: #f5f5f5;
+        }
+        
+        .items-table .total-label {
+            text-align: right;
+            padding-right: 15px;
+            color: #1a237e;
+        }
+        
+        .items-table .total-value {
+            text-align: right;
+            color: #1a237e;
+            font-size: 14pt;
+        }
+        
+        /* Observations */
+        .observations {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 60px;
+            font-size: 10pt;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 40px;
+        }
+        
+        .signature-box {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #333;
+            margin-bottom: 5px;
+            padding-top: 5px;
+        }
+        
+        .signature-label {
+            font-size: 9pt;
+            color: #666;
+        }
+        
+        .footer-info {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        .footer-info p {
+            font-size: 8pt;
+            color: #888;
+            margin: 3px 0;
+        }
+        
+        /* Print controls */
+        .print-controls {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .print-controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-print {
+            background: linear-gradient(135deg, #1a237e 0%, #7c4dff 100%);
+            color: white;
+        }
+        
+        .btn-back {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-print:hover, .btn-back:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        @media print {
+            .print-controls {
+                display: none !important;
+            }
+            
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .print-container {
+                padding: 0;
+            }
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 10pt;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+        
+        .status-pendente {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-concluida {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelada {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="print-controls">
+        <button class="btn-back" onclick="window.close()">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </button>
+        <button class="btn-print" onclick="window.print()">
+            <i class="fas fa-print"></i> Imprimir / Salvar PDF
+        </button>
+    </div>
+
+    <div class="print-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-icon">AM</div>
+                <div class="company-info">
+                    <h1>AM LICITA</h1>
+                    <p>Soluções em Licitações e Contratos</p>
+                </div>
+            </div>
+            <div class="os-number">
+                <h2>ORDEM DE SERVIÇO</h2>
+                <div class="number">Nº {{ ordem.numero }}</div>
+                <div class="date">{{ ordem.data_criacao.strftime('%d/%m/%Y') }}</div>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div style="text-align: right; margin-bottom: 15px;">
+            <span class="status-badge status-{{ ordem.status }}">
+                {% if ordem.status == 'pendente' %}
+                    ⏳ PENDENTE
+                {% elif ordem.status == 'concluida' %}
+                    ✅ CONCLUÍDA
+                {% else %}
+                    ❌ CANCELADA
+                {% endif %}
+            </span>
+        </div>
+
+        <!-- Client Data -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-user"></i> DADOS DO CLIENTE
+            </div>
+            <div class="section-content">
+                <div class="client-grid">
+                    <div class="info-row full-width">
+                        <label>Cliente:</label>
+                        <span><strong>{{ ordem.cliente }}</strong></span>
+                    </div>
+                    {% if ordem.cpf_cnpj %}
+                    <div class="info-row">
+                        <label>CPF/CNPJ:</label>
+                        <span>{{ ordem.cpf_cnpj }}</span>
+                    </div>
+                    {% endif %}
+                    {% if ordem.telefone %}
+                    <div class="info-row">
+                        <label>Telefone:</label>
+                        <span>{{ ordem.telefone }}</span>
+                    </div>
+                    {% endif %}
+                    {% if ordem.email %}
+                    <div class="info-row">
+                        <label>E-mail:</label>
+                        <span>{{ ordem.email }}</span>
+                    </div>
+                    {% endif %}
+                    {% if ordem.cidade %}
+                    <div class="info-row">
+                        <label>Cidade:</label>
+                        <span>{{ ordem.cidade }}</span>
+                    </div>
+                    {% endif %}
+                    {% if ordem.endereco %}
+                    <div class="info-row full-width">
+                        <label>Endereço:</label>
+                        <span>{{ ordem.endereco }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Items -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-list"></i> ITENS / SERVIÇOS
+            </div>
+            <div class="section-content">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th class="item-number">#</th>
+                            <th>DESCRIÇÃO</th>
+                            <th class="item-qty">QTD</th>
+                            <th class="item-price">VALOR UNIT.</th>
+                            <th class="item-total">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in ordem.itens %}
+                        <tr>
+                            <td class="item-number">{{ loop.index }}</td>
+                            <td>{{ item.descricao }}</td>
+                            <td class="item-qty">{{ item.quantidade }}</td>
+                            <td class="item-price">R$ {{ "%.2f"|format(item.valor_unitario) }}</td>
+                            <td class="item-total">R$ {{ "%.2f"|format(item.valor_total) }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% for i in range(ordem.itens|length, 8) %}
+                        <tr>
+                            <td class="item-number">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td class="item-qty">&nbsp;</td>
+                            <td class="item-price">&nbsp;</td>
+                            <td class="item-total">&nbsp;</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="total-label">VALOR TOTAL:</td>
+                            <td class="total-value">R$ {{ "%.2f"|format(ordem.valor_total) }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Observations -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fas fa-sticky-note"></i> OBSERVAÇÕES
+            </div>
+            <div class="section-content">
+                <div class="observations">
+                    {{ ordem.observacoes or 'Nenhuma observação registrada.' }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="signature-section">
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Responsável - AM LICITA</div>
+                </div>
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Cliente: {{ ordem.cliente }}</div>
+                </div>
+            </div>
+            
+            <div class="footer-info">
+                <p><strong>AM LICITA</strong> - Soluções em Licitações e Contratos</p>
+                <p>Documento gerado em {{ ordem.data_criacao.strftime('%d/%m/%Y às %H:%M') }}</p>
+                <p>Este documento é válido como comprovante de ordem de serviço</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

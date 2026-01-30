@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}OS {{ ordem.numero }} - AM LICITA{% endblock %}
+
+{% block content %}
+<div class="view-page">
+    <div class="view-header">
+        <a href="{{ url_for('index') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+        <div class="view-title">
+            <h1>
+                <i class="fas fa-file-alt"></i> Ordem de Serviço {{ ordem.numero }}
+            </h1>
+            <span class="status-badge status-{{ ordem.status }}">
+                {% if ordem.status == 'pendente' %}
+                    <i class="fas fa-clock"></i> Pendente
+                {% elif ordem.status == 'concluida' %}
+                    <i class="fas fa-check-circle"></i> Concluída
+                {% else %}
+                    <i class="fas fa-times-circle"></i> Cancelada
+                {% endif %}
+            </span>
+        </div>
+        <div class="view-actions">
+            <a href="{{ url_for('editar_ordem', id=ordem.id) }}" class="btn btn-secondary">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{{ url_for('imprimir_ordem', id=ordem.id) }}" class="btn btn-primary" target="_blank">
+                <i class="fas fa-print"></i> Imprimir PDF
+            </a>
+        </div>
+    </div>
+
+    <div class="view-content">
+        <!-- Status Actions -->
+        <div class="status-actions-card">
+            <h3><i class="fas fa-cog"></i> Alterar Status</h3>
+            <div class="status-buttons">
+                <form method="POST" action="{{ url_for('alterar_status', id=ordem.id) }}" style="display: inline;">
+                    <input type="hidden" name="status" value="pendente">
+                    <button type="submit" class="btn-status btn-status-pending {% if ordem.status == 'pendente' %}active{% endif %}">
+                        <i class="fas fa-clock"></i> Pendente
+                    </button>
+                </form>
+                <form method="POST" action="{{ url_for('alterar_status', id=ordem.id) }}" style="display: inline;">
+                    <input type="hidden" name="status" value="concluida">
+                    <button type="submit" class="btn-status btn-status-completed {% if ordem.status == 'concluida' %}active{% endif %}">
+                        <i class="fas fa-check"></i> Concluída
+                    </button>
+                </form>
+                <form method="POST" action="{{ url_for('alterar_status', id=ordem.id) }}" style="display: inline;">
+                    <input type="hidden" name="status" value="cancelada">
+                    <button type="submit" class="btn-status btn-status-cancelled {% if ordem.status == 'cancelada' %}active{% endif %}">
+                        <i class="fas fa-times"></i> Cancelada
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dados do Cliente -->
+        <div class="info-card">
+            <h3><i class="fas fa-user"></i> Dados do Cliente</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Cliente</label>
+                    <span>{{ ordem.cliente }}</span>
+                </div>
+                {% if ordem.cpf_cnpj %}
+                <div class="info-item">
+                    <label>CPF/CNPJ</label>
+                    <span>{{ ordem.cpf_cnpj }}</span>
+                </div>
+                {% endif %}
+                {% if ordem.telefone %}
+                <div class="info-item">
+                    <label>Telefone</label>
+                    <span>{{ ordem.telefone }}</span>
+                </div>
+                {% endif %}
+                {% if ordem.email %}
+                <div class="info-item">
+                    <label>E-mail</label>
+                    <span>{{ ordem.email }}</span>
+                </div>
+                {% endif %}
+                {% if ordem.cidade %}
+                <div class="info-item">
+                    <label>Cidade</label>
+                    <span>{{ ordem.cidade }}</span>
+                </div>
+                {% endif %}
+                {% if ordem.endereco %}
+                <div class="info-item full-width">
+                    <label>Endereço</label>
+                    <span>{{ ordem.endereco }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Datas -->
+        <div class="info-card">
+            <h3><i class="fas fa-calendar"></i> Informações da Ordem</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Data de Criação</label>
+                    <span>{{ ordem.data_criacao.strftime('%d/%m/%Y às %H:%M') }}</span>
+                </div>
+                {% if ordem.data_conclusao %}
+                <div class="info-item">
+                    <label>Data de Conclusão</label>
+                    <span>{{ ordem.data_conclusao.strftime('%d/%m/%Y às %H:%M') }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Itens -->
+        <div class="info-card">
+            <h3><i class="fas fa-list"></i> Itens/Serviços</h3>
+            <div class="items-view-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in ordem.itens %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ item.descricao }}</td>
+                            <td>{{ item.quantidade }}</td>
+                            <td>R$ {{ "%.2f"|format(item.valor_unitario) }}</td>
+                            <td>R$ {{ "%.2f"|format(item.valor_total) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="total-label">VALOR TOTAL</td>
+                            <td class="total-value">R$ {{ "%.2f"|format(ordem.valor_total) }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- Observações -->
+        {% if ordem.observacoes %}
+        <div class="info-card">
+            <h3><i class="fas fa-sticky-note"></i> Observações</h3>
+            <p class="observacoes-text">{{ ordem.observacoes }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Ações -->
+        <div class="danger-zone">
+            <h3><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h3>
+            <p>Ações irreversíveis</p>
+            <form method="POST" action="{{ url_for('excluir_ordem', id=ordem.id) }}" 
+                  onsubmit="return confirm('Tem certeza que deseja excluir esta ordem de serviço? Esta ação não pode ser desfeita.');">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Excluir Ordem de Serviço
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

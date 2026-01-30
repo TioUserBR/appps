@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - AM LICITA{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1><i class="fas fa-chart-line"></i> Dashboard</h1>
+            <p>Gerencie suas ordens de serviço de forma eficiente</p>
+        </div>
+        <a href="{{ url_for('nova_ordem') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus"></i> Nova Ordem de Serviço
+        </a>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card stat-total">
+            <div class="stat-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.total }}</span>
+                <span class="stat-label">Total de Ordens</span>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-pending">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.pendentes }}</span>
+                <span class="stat-label">Pendentes</span>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-completed">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.concluidas }}</span>
+                <span class="stat-label">Concluídas</span>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-value">
+            <div class="stat-icon">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value">R$ {{ "%.2f"|format(stats.valor_total) }}</span>
+                <span class="stat-label">Valor Total</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-section">
+        <form method="GET" class="search-form">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" name="busca" placeholder="Buscar por cliente ou número da OS..." 
+                       value="{{ busca }}" class="search-input">
+            </div>
+            <div class="filter-buttons">
+                <a href="{{ url_for('index') }}" class="filter-btn {% if not status_filter %}active{% endif %}">
+                    Todas
+                </a>
+                <a href="{{ url_for('index', status='pendente') }}" 
+                   class="filter-btn {% if status_filter == 'pendente' %}active{% endif %}">
+                    <i class="fas fa-clock"></i> Pendentes
+                </a>
+                <a href="{{ url_for('index', status='concluida') }}" 
+                   class="filter-btn {% if status_filter == 'concluida' %}active{% endif %}">
+                    <i class="fas fa-check"></i> Concluídas
+                </a>
+                <a href="{{ url_for('index', status='cancelada') }}" 
+                   class="filter-btn {% if status_filter == 'cancelada' %}active{% endif %}">
+                    <i class="fas fa-times"></i> Canceladas
+                </a>
+            </div>
+            <button type="submit" class="btn btn-search">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+    </div>
+
+    <!-- Orders Grid -->
+    <div class="orders-section">
+        <h2><i class="fas fa-list"></i> Ordens de Serviço</h2>
+        
+        {% if ordens %}
+        <div class="orders-grid">
+            {% for ordem in ordens %}
+            <div class="order-card" data-status="{{ ordem.status }}">
+                <div class="order-header">
+                    <span class="order-number">OS {{ ordem.numero }}</span>
+                    <span class="order-status status-{{ ordem.status }}">
+                        {% if ordem.status == 'pendente' %}
+                            <i class="fas fa-clock"></i> Pendente
+                        {% elif ordem.status == 'concluida' %}
+                            <i class="fas fa-check-circle"></i> Concluída
+                        {% else %}
+                            <i class="fas fa-times-circle"></i> Cancelada
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="order-body">
+                    <h3 class="client-name">
+                        <i class="fas fa-user"></i> {{ ordem.cliente }}
+                    </h3>
+                    
+                    <div class="order-details">
+                        {% if ordem.cidade %}
+                        <p><i class="fas fa-map-marker-alt"></i> {{ ordem.cidade }}</p>
+                        {% endif %}
+                        {% if ordem.telefone %}
+                        <p><i class="fas fa-phone"></i> {{ ordem.telefone }}</p>
+                        {% endif %}
+                        <p><i class="fas fa-calendar"></i> {{ ordem.data_criacao.strftime('%d/%m/%Y') }}</p>
+                    </div>
+                    
+                    <div class="order-items-preview">
+                        <span class="items-count">
+                            <i class="fas fa-box"></i> {{ ordem.itens|length }} item(s)
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="order-footer">
+                    <span class="order-value">
+                        R$ {{ "%.2f"|format(ordem.valor_total) }}
+                    </span>
+                    <div class="order-actions">
+                        <a href="{{ url_for('ver_ordem', id=ordem.id) }}" class="btn-icon btn-view" title="Visualizar">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{{ url_for('editar_ordem', id=ordem.id) }}" class="btn-icon btn-edit" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{{ url_for('imprimir_ordem', id=ordem.id) }}" class="btn-icon btn-print" title="Imprimir" target="_blank">
+                            <i class="fas fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-inbox"></i>
+            </div>
+            <h3>Nenhuma ordem encontrada</h3>
+            <p>{% if busca %}Tente buscar com outros termos{% else %}Comece criando sua primeira ordem de serviço{% endif %}</p>
+            <a href="{{ url_for('nova_ordem') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Criar Nova OS
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
