@@ -432,8 +432,6 @@
                             <th class="item-number">#</th>
                             <th>DESCRIÇÃO</th>
                             <th class="item-qty">QTD</th>
-                            <th class="item-price">VALOR UNIT.</th>
-                            <th class="item-total">TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -442,8 +440,6 @@
                             <td class="item-number">{{ loop.index }}</td>
                             <td>{{ item.descricao }}</td>
                             <td class="item-qty">{{ item.quantidade }}</td>
-                            <td class="item-price">R$ {{ "%.2f"|format(item.valor_unitario) }}</td>
-                            <td class="item-total">R$ {{ "%.2f"|format(item.valor_total) }}</td>
                         </tr>
                         {% endfor %}
                         {% for i in range(ordem.itens|length, 8) %}
@@ -451,16 +447,10 @@
                             <td class="item-number">&nbsp;</td>
                             <td>&nbsp;</td>
                             <td class="item-qty">&nbsp;</td>
-                            <td class="item-price">&nbsp;</td>
-                            <td class="item-total">&nbsp;</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colspan="4" class="total-label">VALOR TOTAL:</td>
-                            <td class="total-value">R$ {{ "%.2f"|format(ordem.valor_total) }}</td>
-                        </tr>
                     </tfoot>
                 </table>
             </div>
@@ -499,4 +489,5 @@
         </div>
     </div>
 </body>
+
 </html>
